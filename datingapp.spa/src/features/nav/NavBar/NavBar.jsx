@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
-import axios from 'axios';
+import { toast } from 'react-toastify';
+import * as authService from '../../../app/services/authService';
+
 
 class NavBar extends Component {
   state = {
@@ -12,14 +14,16 @@ class NavBar extends Component {
 
   handleLogin = async (e) => {
     e.preventDefault();
-    let { data } = await axios.post(
-      'http://localhost:5000/api/auth/login',
-      this.state.account
-    );
-    if (data) {
-      localStorage.setItem('token', data.token);
+    try {
+      await authService.login(this.state.account);
+      window.location = '/';
+      toast.success('Successfully logged in');
+    } catch (ex) {
+      if (ex.response && ex.response.status === 401) {
+        console.log(ex.response.statusText)
+        toast.error('Unauthorized user');
+      }
     }
-    window.location = '/';
   };
 
   handleChange = (e) => {
@@ -36,7 +40,7 @@ class NavBar extends Component {
 
   render() {
     const { account } = this.state;
-    const {authenticated} = this.props;
+    const { authenticated } = this.props;
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -84,7 +88,10 @@ class NavBar extends Component {
         )}
 
         {!authenticated && (
-          <form className="form-inline mt-2 mt-md-0" onSubmit={this.handleLogin}>
+          <form
+            className="form-inline mt-2 mt-md-0"
+            onSubmit={this.handleLogin}
+          >
             <input
               name="username"
               value={account.username}

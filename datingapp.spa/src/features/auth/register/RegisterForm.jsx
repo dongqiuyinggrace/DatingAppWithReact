@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import * as authService from '../../../app/services/authService';
+import { toast } from 'react-toastify';
 
 class RegisterForm extends Component {
   state = {
@@ -11,11 +12,16 @@ class RegisterForm extends Component {
 
   handleRegister = async (e) => {
     e.preventDefault();
-    let { data } = await axios.post(
-      'http://localhost:5000/api/auth/register',
-      this.state.account
-    );
-    console.log(data);
+    try {
+      await authService.register(this.state.account);
+      toast.success('Successfully registed');
+    } catch(ex) {
+      if(ex.response && ex.response.status === 400) {
+        console.log(ex.response.data);
+        toast.error('User Register failed');
+      }
+    }
+    
   };
 
   handleChange = (e) => {
