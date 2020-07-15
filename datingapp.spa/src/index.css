@@ -15,3 +15,9 @@ code {
 .navbar NavLink {
   cursor: pointer;
 }
+
+.dropdown-toggle, .dropdown-item {
+  cursor: pointer;
+}
+
+ 

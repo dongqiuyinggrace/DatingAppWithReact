@@ -5,6 +5,7 @@ import './index.css';
 import App from '../src/app/layout/App';
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootswatch/dist/united/bootstrap.css'
 import 'font-awesome/css/font-awesome.css';
 
 ReactDOM.render(
