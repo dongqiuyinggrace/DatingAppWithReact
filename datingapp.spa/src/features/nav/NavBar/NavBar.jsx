@@ -11,21 +11,28 @@ import {
 
 class NavBar extends Component {
   state = {
+    currentUser: null,
     account: {
       username: '',
       password: '',
     },
   };
 
+  componentDidMount() {
+    const user = authService.getCurrentUser();
+    this.setState({currentUser: user});
+  }
+
   handleLogin = async (e) => {
     e.preventDefault();
     try {
       await authService.login(this.state.account);
-      window.location = '/';
+      const user = authService.getCurrentUser();
+      this.setState({currentUser: user});
+      this.props.history.push('/members');
       toast.success('Successfully logged in');
     } catch (ex) {
       if (ex.response && ex.response.status === 401) {
-        console.log(ex.response.statusText);
         toast.error('Unauthorized user');
       }
     }
@@ -35,17 +42,19 @@ class NavBar extends Component {
     let account = { ...this.state.account };
     account[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ account });
-    console.log(account.username);
   };
 
   handleLogout = () => {
     authService.logout();
+    console.log(window.location);
     window.location = '/';
   };
 
   render() {
-    const { account } = this.state;
-    const { authenticated } = this.props;
+    const { account, currentUser } = this.state;
+    console.log('render', currentUser);
+    const authenticated = currentUser !== null ? true : false;
+    
 
     return (
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -56,7 +65,7 @@ class NavBar extends Component {
           {authenticated && (
             <ul className="navbar-nav mr-auto">
               <li className="nav-item">
-                <NavLink className="nav-link" to="/matches">
+                <NavLink className="nav-link" to="/members">
                   Matches
                 </NavLink>
               </li>
@@ -76,9 +85,9 @@ class NavBar extends Component {
           {authenticated && (
             <UncontrolledDropdown className="text-light">
               <DropdownToggle tag="a" caret className="dropdown-toggle">
-                Welcome User
+                Welcome {currentUser.unique_name}
               </DropdownToggle>
-              <DropdownMenu className="mt-2">
+              <DropdownMenu className="mt-5">
                 <DropdownItem tag="a" href="#">
                   <i className="fa fa-user"></i>
                   Edit Profile
