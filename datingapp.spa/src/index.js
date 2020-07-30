@@ -7,6 +7,7 @@ import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootswatch/dist/united/bootstrap.css'
 import 'font-awesome/css/font-awesome.css';
+import "react-image-gallery/styles/css/image-gallery.css";
 
 ReactDOM.render(
   <BrowserRouter>

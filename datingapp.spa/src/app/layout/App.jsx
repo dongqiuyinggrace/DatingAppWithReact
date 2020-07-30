@@ -5,10 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import NavBar from '../../features/nav/NavBar/NavBar';
 import HomePage from '../../features/home/HomePage';
 import RegisterForm from './../../features/auth/register/RegisterForm';
-import MemberList from './../../features/member-list/MemberList';
+import MemberList from './../../features/members/member-list/MemberList';
 import Lists from '../../features/lists/Lists';
 import Messages from '../../features/messages/Messages';
 import ProtectedRoute from '../common/ProtectedRoute';
+import MemberDetailed from '../../features/members/member-detailed/MemberDetailed';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
       <ToastContainer/>
       <NavBar />
       <Switch>
+        <ProtectedRoute path="/members/:id" component={MemberDetailed} />
         <ProtectedRoute path="/members" component={MemberList} />
         <ProtectedRoute path="/lists" component={Lists} />
         <ProtectedRoute path="/messages" component={Messages} />

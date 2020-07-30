@@ -42,17 +42,16 @@ class NavBar extends Component {
     let account = { ...this.state.account };
     account[e.currentTarget.name] = e.currentTarget.value;
     this.setState({ account });
+    
   };
 
   handleLogout = () => {
     authService.logout();
-    console.log(window.location);
     window.location = '/';
   };
 
   render() {
     const { account, currentUser } = this.state;
-    console.log('render', currentUser);
     const authenticated = currentUser !== null ? true : false;
     
 
